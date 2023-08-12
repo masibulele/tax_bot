@@ -1,0 +1,13 @@
+build a text bot
+1. obtain tax requirements 
+2. create database with specific tax requirements
+2.1 load the data from source 
+2.2 transform
+2.1 create text chuncks
+2.2 create embdedings 
+2.3 create a vector DB with embdeddings
+3. create an agent for the bot
+3.1 define the tools
+3.2 create tools
+3.3 initialize agent
+4. query the bot

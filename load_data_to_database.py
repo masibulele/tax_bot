@@ -34,11 +34,11 @@ def create_Vector_db(chunk_list):
 
 
 # create a query function
-def get_similarity_search(query,db):
+def get_similarity_search(query,db,k=2):
     """Takes in query creates a query embding and returns response"""
     embed_query = OpenAIEmbeddings().embed_query(query)
-    similar_doc= db.similarity_search_by_vector(embed_query)
-    return similar_doc[0]
+    similar_doc= db.similarity_search_by_vector(embed_query,k=k)
+    return similar_doc
 
 
 if __name__ == '__main__':
@@ -56,4 +56,4 @@ if __name__ == '__main__':
     query = 'what are the budget proposals'
 
     ans= get_similarity_search(query,db)
-    print(ans.page_content)
+    print(ans)

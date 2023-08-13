@@ -42,7 +42,7 @@ def get_similarity_search(query,db,k=2):
 
 
 if __name__ == '__main__':
-    file_path='data\Tax-guide.pdf'
+    file_path='data\old_tax_guide.pdf'
     document= get_source_data_pdf(file_path)
     # print(document)
     # print(type(document))
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     # print(type(doc_chunks))
 
     db = create_Vector_db(doc_chunks)
-    query = 'what are the budget proposals'
+    query = 'what is income tax'
 
     ans= get_similarity_search(query,db)
     print(ans)

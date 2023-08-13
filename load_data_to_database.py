@@ -8,25 +8,52 @@ from langchain.vectorstores import Chroma
 load_dotenv()
 
 #get data from  source documents
-loader = UnstructuredPDFLoader('data\Tax-guide.pdf')
-data= loader.load()
-# print(type(data))
+
+def get_source_data_pdf(file):
+    """takes a pdf document as data  and returns a document object (text and associated metadata) """
+    loader = UnstructuredPDFLoader(file)
+    data= loader.load()
+    return data
+    
 
 #break down document in to smaller text chuncks so that model can work with text
+def create_chunks(data_list_object):
+    """Split the text up into small, semantically meaningful chunks"""
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=20,)
+    document= text_splitter.split_documents(data_list_object)
+    return document
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=20,)
-
-document= text_splitter.split_documents(data)
-# print(document[0])
-# print(type(document[1]))
 
 # create vector representations of the text chunks 
-embeddings_model= OpenAIEmbeddings()
+def create_Vector_db(chunk_list):
+    """takes in chunk list and creates a vector database"""
+    embeddings_model= OpenAIEmbeddings()
+    db= Chroma.from_documents(chunk_list,embeddings_model)
+    return db
 
-db= Chroma.from_documents(document,embeddings_model)
 
-query = 'what are the budget proposals'
 
-embed_query = OpenAIEmbeddings().embed_query(query)
-docs= db.similarity_search_by_vector(embed_query)
-print(docs[0].page_content)
+# create a query function
+def get_response(query,db):
+    """Takes in query creates a query embding and returns response"""
+    embed_query = OpenAIEmbeddings().embed_query(query)
+    response= db.similarity_search_by_vector(embed_query)
+    return response[0]
+
+
+if __name__ == '__main__':
+    file_path='data\Tax-guide.pdf'
+    document= get_source_data_pdf(file_path)
+    # print(document)
+    # print(type(document))
+
+    doc_chunks= create_chunks(document)
+    # print(len(doc_chunks))
+    # print(doc_chunks[0])
+    # print(type(doc_chunks))
+
+    db = create_Vector_db(doc_chunks)
+    query = 'what are the budget proposals'
+
+    ans= get_response(query,db)
+    print(ans.page_content)

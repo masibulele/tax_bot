@@ -6,9 +6,8 @@ from langchain.agents import AgentType
 from langchain.llms import OpenAI
 from langchain.chains import RetrievalQA
 from langchain.agents import Tool
-from load_data_to_database import create_Vector_db , get_source_data_pdf, create_chunks
+from load_data_to_database import load_db_from_disk
 from langchain.tools import BaseTool
-
 
 #including envirnoment variables
 load_dotenv()
@@ -18,10 +17,7 @@ llm= OpenAI(temperature=0)
 
 #create tools
 # create retrivial tool of individul taxes vector db
-file_name= 'data\old_tax_guide.pdf'
-document= get_source_data_pdf(file=file_name)
-doc_chunks= create_chunks(document)
-db =create_Vector_db(doc_chunks)
+db =load_db_from_disk()
 individul_tax= RetrievalQA.from_chain_type(llm=llm,chain_type="stuff",retriever=db.as_retriever())
 tax= Tool(
     name='Individual Tax QA',

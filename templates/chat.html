@@ -60,6 +60,7 @@
 					
 					$("#text").val("");
 					$("#messageFormeight").append(userHtml);
+					
 
 					$.ajax({
 						data: {
@@ -70,6 +71,7 @@
 					}).done(function(data) {
 						var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="static/image/robot.jpeg" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
 						$("#messageFormeight").append($.parseHTML(botHtml));
+						document.getElementById("userInput").scrollIntoView({ block: "end", behavior: "smooth" });
 					});
 					event.preventDefault();
 				});

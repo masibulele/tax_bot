@@ -8,6 +8,7 @@ from langchain.chains import RetrievalQA
 from langchain.agents import Tool
 from load_data_to_database import load_db_from_disk
 from langchain.tools import BaseTool
+from langchain.memory import ConversationBufferWindowMemory
 
 #including envirnoment variables
 load_dotenv()
@@ -31,7 +32,8 @@ tools.append(tax)
 
 
 # initialize agent with tools, llm, type of agent
-agent = initialize_agent(tools,llm=llm,agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
+memory= ConversationBufferWindowMemory(memory_key="chat_history",k=3)
+agent = initialize_agent(tools,llm=llm,agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION, verbose=True, memory=memory)
 
 
 if __name__ == "__main__":

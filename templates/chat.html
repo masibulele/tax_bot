@@ -34,7 +34,7 @@
 							
 							
 						</div>
-						<div class="card-footer" id="userInput">
+						<div class="card-footer">
 							<form id="messageArea" class="input-group">
                                 <input type="text" id="text" name="msg" placeholder="Type your message..." autocomplete="off" class="form-control type_msg" required/>
 								<div class="input-group-append">
@@ -60,7 +60,6 @@
 					
 					$("#text").val("");
 					$("#messageFormeight").append(userHtml);
-					document.getElementById("userInput").scrollIntoView({ block: "start", behavior: "smooth" });
 
 					$.ajax({
 						data: {
